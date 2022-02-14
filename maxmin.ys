@@ -1,0 +1,23 @@
+main:
+    irmovq $0, %r12         #constant for comparing
+    popq %r8                #the first number
+    rrmovq %r8, %rsi        #place for min number
+    rrmovq %r8, %rdi        #place for max number
+    
+vertailu:                   #comparing loop
+    popq %r8                #pop the next from the stack
+    subq %r12,%r8           #if its 0
+    je lopetus              #stack is empty and lets stop
+    rrmovq %rdi, %r9        #current max to r9 temporarily
+    rrmovq %rsi, %r10       #current min to r10 temporarily
+    subq %r8, %r9           #if r9-r8<0, r8 is bigger
+    subq %r12, %r9
+    cmovl %r8, %rdi         #and r8 is new max
+    subq %r8, %r10          #if r10-r8>0, r8 smaller
+    subq %r12, %r10
+    cmovg %r8, %rsi         #and r8 is new min
+    jmp vertailu            #loop again
+
+lopetus:                    #stop
+    halt
+    
